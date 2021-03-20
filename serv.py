@@ -25,9 +25,9 @@ def index():
     buf_decode = base64.b64decode(data)
 
     if predict():
-        return True
+        return 'true'
     else:
-        return False
+        return 'false'
 
 
 if __name__ == "__main__":
