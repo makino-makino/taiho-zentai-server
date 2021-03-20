@@ -8,6 +8,8 @@ icrawler = "*"
 keras = "*"
 tensorflow = "*"
 sklearn = "*"
+opencv-python = "*"
+flask = "*"
 
 [dev-packages]
 
