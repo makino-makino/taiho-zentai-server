@@ -53,17 +53,26 @@ def index():
 def setup():
     host = "yahoo-hackathon-gateai-1.japaneast.cloudapp.azure.com"
     model_client_port = 5002
+    input_client_port = 5001
 
     model_file = './data/model/model.h5'
 
     model = load_model(model_file)
 
+    channel_input_client = grpc.insecure_channel(
+        f'{host}:{str(input_client_port)}', options=[])
+    api_input_client = InputClientStub(channel_input_client)
+    # call inpuot_client to generate keys
+    print("call gen_key")
+    # ここはうごく
+    api_input_client.gen_key(NoParam())
+
+    # grpc stub to model_client
     channel_model_client = grpc.insecure_channel(
         f'{host}:{str(model_client_port)}', options=[])
     api_model_client = ModelClientStub(channel_model_client)
 
     # モデルのアップロード+暗号化
-    # サーバが落ちてる？
     # call model_client to upload h5 file from modelfiles/h5/{model_name}.h5
     print("call load_and_compile_model_from_local_h5")
     model_info = ModelBinaryKeras()
@@ -76,10 +85,10 @@ def setup():
 
 
 if __name__ == "__main__":
-    # setup()
+    setup()
 
     app.run(
         host="0.0.0.0",
-        port=5001,
+        port=5000,
         debug=True
     )

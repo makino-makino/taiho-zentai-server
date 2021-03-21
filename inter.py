@@ -29,7 +29,6 @@ def predict():
     channel_input_client = grpc.insecure_channel(
         f'{host}:{str(input_client_port)}', options=[])
     api_input_client = InputClientStub(channel_input_client)
-    """
 
     # call inpuot_client to generate keys
     print("call gen_key")
@@ -40,7 +39,8 @@ def predict():
 
     img_nad = img_to_array(img)/255
     img_nad = img_nad[None, ...]
-    client_test_data = img_nad
+    client_test_data = img_nad[0]
+    client_test_data = np.transpose(client_test_data, (2, 0, 1))
 
     data_for_cf = client_test_data.tolist()
     input_data = Tensor()
@@ -52,9 +52,7 @@ def predict():
     pred = pickle.loads(pred.data)
 
     result = np.argmax(pred[0])
-    return bool(result)
-    """
-    return True
+    return result
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -67,11 +65,16 @@ def index():
 
     with open('hoge.jpg', 'wb') as f:
         f.write(buf_decode)
+    
+    pred = predict()
+    print(pred)
 
-    if predict():
+    if pred:
         return 'true'
     else:
         return 'false'
+
+    return 'true'
 
 
 if __name__ == "__main__":
