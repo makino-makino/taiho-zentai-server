@@ -47,11 +47,14 @@ def predict():
 
     # call prediction
     # ここも止まる
+    """
     pred = api_input_client.predict(input_data)
     pred = pickle.loads(pred.data)
 
     result = np.argmax(pred[0])
     return bool(result)
+    """
+    return True
 
 
 @app.route('/', methods=['GET', 'POST'])

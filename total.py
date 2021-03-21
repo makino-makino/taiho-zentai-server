@@ -37,9 +37,13 @@ def index():
         return
 
     data = request.json['img']
-    buf_decode = base64.b64decode(data)
+    ido = request.json['ido']
+    keido = request.json['keido']
 
-    filename = hashlib.md5(buf_decode).hexdigest()
+    buf_decode = base64.b64decode(data)
+    md5 = hashlib.md5(buf_decode).hexdigest()
+
+    filename = f'{ido}-{keido}-{md5}.jpg'
     with open(filename, 'wb') as f:
         f.write(buf_decode)
 
@@ -72,10 +76,10 @@ def setup():
 
 
 if __name__ == "__main__":
-    setup()
+    # setup()
 
     app.run(
         host="0.0.0.0",
-        port=5000,
+        port=5001,
         debug=True
     )
