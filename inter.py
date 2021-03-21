@@ -29,6 +29,7 @@ def predict():
     channel_input_client = grpc.insecure_channel(
         f'{host}:{str(input_client_port)}', options=[])
     api_input_client = InputClientStub(channel_input_client)
+    """
 
     # call inpuot_client to generate keys
     print("call gen_key")
@@ -47,7 +48,6 @@ def predict():
 
     # call prediction
     # ここも止まる
-    """
     pred = api_input_client.predict(input_data)
     pred = pickle.loads(pred.data)
 
